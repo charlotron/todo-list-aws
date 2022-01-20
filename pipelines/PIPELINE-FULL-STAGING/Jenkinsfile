@@ -37,7 +37,8 @@ pipeline {
             steps{
                 echo 'Configuring aws client as long as aws plugin does not work with learn lab'
                 sh "mkdir ~/.aws"
-                sh "echo \"$AWS_CREDENTIALS_FILE\" > ~/.aws/credentials"
+                sh "echo \\\"$AWS_CREDENTIALS_FILE\\\" > ~/.aws/credentials"
+                sh "more  ~/.aws/credentials"
 
                 echo 'Initiating Deployment'
                 sh "bash pipelines/common-steps/deploy.sh"
