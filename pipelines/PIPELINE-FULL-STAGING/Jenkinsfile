@@ -34,8 +34,8 @@ pipeline {
             }
         }
         stage('Deploy'){
-            withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                steps{
+            steps{
+                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     echo 'Initiating Deployment'
                     sh "bash pipelines/common-steps/deploy.sh"
                 }
