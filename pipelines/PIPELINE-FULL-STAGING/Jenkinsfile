@@ -35,7 +35,8 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                //withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                sshagent(credentials: ['ssh-credentials']) {
                     echo 'Initiating Deployment'
                     sh "bash pipelines/common-steps/deploy.sh"
                 }
