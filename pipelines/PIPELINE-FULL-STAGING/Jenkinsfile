@@ -4,9 +4,9 @@ pipeline {
         
         stage('SetUp'){
             steps{
-                echo 'Configuring aws client as long as aws plugin does not work with learn lab'
+                echo '********* Configuring aws client as long as aws plugin does not work with learn lab'
                 sh "mkdir -p ~/.aws"
-                sh "echo \\\"$AWS_CREDENTIALS_FILE\\\" > ~/.aws/credentials"
+                sh "echo \"$AWS_CREDENTIALS_FILE\" > ~/.aws/credentials"
                 sh "more  ~/.aws/credentials"
 
                 echo 'Setup Virtualenv for testing'
