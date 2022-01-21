@@ -34,7 +34,7 @@ def get_item(key, dynamodb=None):
     else:
         print('Result getItem:'+str(result))
         if 'Item' in result:
-            item=result['Item']
+            item = result['Item']
             return item
 
 
@@ -42,12 +42,13 @@ def get_items(dynamodb=None):
     table = get_table(dynamodb)
     # fetch todo from the database
     result = table.scan()
-    items=result['Items']
+    items = result['Items']
     return items
+
 
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
-    now=time.time()
+    now = time.time()
     timestamp = str(now)
     print('Table name:' + table.name)
     item = {
@@ -74,8 +75,8 @@ def put_item(text, dynamodb=None):
 
 def update_item(key, text, checked, dynamodb=None):
     table = get_table(dynamodb)
-    curtime=time.time()
-    timestamp = int(curtime * 1000)
+    now = time.time()
+    timestamp = int(now * 1000)
     # update the todo in the database
     try:
         result = table.update_item(
@@ -144,7 +145,7 @@ def create_todo_table(dynamodb):
     )
 
     # Wait until the table exists.
-    waiter=table.meta.client.get_waiter('table_exists');
+    waiter = table.meta.client.get_waiter('table_exists')
     waiter.wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
         raise AssertionError()
