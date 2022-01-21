@@ -16,7 +16,8 @@ def get_table(dynamodb=None):
                                                endpoint_url=URL)
         dynamodb = boto3.resource("dynamodb")
     # fetch todo from the database
-    table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
+    tableName = os.environ['DYNAMODB_TABLE']
+    table = dynamodb.Table(tableName)
     return table
 
 
@@ -48,9 +49,10 @@ def get_items(dynamodb=None):
 
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
+    tableName = table.name
     now = time.time()
     timestamp = str(now)
-    print('Table name:' + table.name)
+    print('Table name:' + tableName)
     item = {
         'id': str(uuid.uuid1()),
         'text': text,
