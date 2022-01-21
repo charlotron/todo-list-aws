@@ -11,14 +11,20 @@ pipeline {
         }
         stage('Merge'){
             steps{
-                sh script: """
-                    set -x
-                    git branch -a
-                    git checkout -b develop origin/develop
-                    git checkout -b master origin/master
-                    git merge develop
-                    git push origin master
-                """, label: "Merging code to master"
+                withCredentials([usernamePassword(credentialsId: "github-charlotron", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    script {
+                        env.encodedPass=URLEncoder.encode(PASS, "UTF-8")
+                    }
+                    sh script: """
+                        set -x
+                        git branch -a
+                        git checkout -b develop origin/develop
+                        git checkout -b master origin/master
+                        git merge develop
+                        git remote -v
+                        git push origin master
+                    """, label: "Merging code to master"
+                }
             }
         }
         stage('Production'){
