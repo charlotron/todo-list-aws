@@ -34,19 +34,21 @@ def get_item(key, dynamodb=None):
     else:
         print('Result getItem:'+str(result))
         if 'Item' in result:
-            return result['Item']
+            item=result['Item']
+            return item
 
 
 def get_items(dynamodb=None):
     table = get_table(dynamodb)
     # fetch todo from the database
     result = table.scan()
-    return result['Items']
-
+    items=result['Items']
+    return items
 
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
-    timestamp = str(time.time())
+    now=time.time()
+    timestamp = str(now)
     print('Table name:' + table.name)
     item = {
         'id': str(uuid.uuid1()),
@@ -97,7 +99,8 @@ def update_item(key, text, checked, dynamodb=None):
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
-        return result['Attributes']
+        atributes=result['Attributes']
+        return atributes
 
 
 def delete_item(key, dynamodb=None):
