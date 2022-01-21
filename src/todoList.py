@@ -100,7 +100,7 @@ def update_item(key, text, checked, dynamodb=None):
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
-        atributes=result['Attributes']
+        atributes = result['Attributes']
         return atributes
 
 
