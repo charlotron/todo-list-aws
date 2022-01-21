@@ -17,8 +17,8 @@ pipeline {
                     }
                     sh script: """
                         set -x
-                        
-                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$encodedPass@/g'))
+
+                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$encodedPass@/g')
                         git remote -v
 
                         git branch -a
