@@ -16,10 +16,11 @@ pipeline {
                     git branch -a
                     git checkout -b develop origin/develop
                     git checkout -b master origin/master
-                    git merge develop
+                    git merge develop             
+                    git remote -v
                 """, label: "Merging code to master"
                 sshagent(['github']) {
-                    sh "git push origin master"
+                    
                 }
 
             }
