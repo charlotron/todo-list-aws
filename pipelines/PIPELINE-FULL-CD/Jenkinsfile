@@ -11,17 +11,20 @@ pipeline {
         }
         stage('Merge'){
             steps{
-                withCredentials([usernamePassword(credentialsId: "github-charlotron", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: "github-charlotron", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     script {
                         env.encodedPass=URLEncoder.encode(PASS, "UTF-8")
                     }
                     sh script: """
                         set -x
+                        
+                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$GIT_PASS@/g'))
+                        git remote -v
+
                         git branch -a
                         git checkout -b develop origin/develop
                         git checkout -b master origin/master
                         git merge develop
-                        git remote -v
                         git push origin master
                     """, label: "Merging code to master"
                 }
