@@ -13,12 +13,12 @@ pipeline {
             steps{
                 withCredentials([usernamePassword(credentialsId: "github-charlotron", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     script {
-                        env.encodedPass=URLEncoder.encode(PASS, "UTF-8")
+                        env.encodedPass=URLEncoder.encode(GIT_PASS, "UTF-8")
                     }
                     sh script: """
                         set -x
                         
-                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$GIT_PASS@/g'))
+                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$encodedPass@/g'))
                         git remote -v
 
                         git branch -a
