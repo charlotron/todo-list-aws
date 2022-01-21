@@ -11,14 +11,11 @@ pipeline {
         }
         stage('Merge'){
             steps{
-                withCredentials([usernamePassword(credentialsId: "github-charlotron", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    script {
-                        env.encodedPass=URLEncoder.encode(GIT_PASS, "UTF-8")
-                    }
+                withCredentials([string(credentialsId: 'github-charlotron-token', variable: 'GIT_TOKEN')]) { 
                     sh script: """
                         set -x
 
-                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_USER:$encodedPass@/g')
+                        git remote set-url origin \$(git remote -v | grep push | awk '{print \$2}' | perl -pe 's/:\\/\\//:\\/\\/$GIT_TOKEN@/g')
                         git remote -v
 
                         git branch -a
