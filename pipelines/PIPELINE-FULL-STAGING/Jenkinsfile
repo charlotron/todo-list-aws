@@ -4,8 +4,17 @@ pipeline {
         
         stage('SetUp'){
             steps{
-                echo 'Setup Virtualenv for testing'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
+                withCredentials([string(credentialsId: 'credentials-file-content', variable: 'SECRET_CREDENTIALS_FILE')]) { //set SECRET with the credential content                
+                    echo '********* Configuring aws client as long as aws plugin does not work with learn lab'
+                    sh "mkdir -p ~/.aws"
+                    sh "rm -f ~/.aws/credentials"
+                    writeFile file: '~/.aws/credentials', text: "$SECRET_CREDENTIALS_FILE"
+
+                    sh "aws sts get-caller-identity"
+
+                    echo 'Setup Virtualenv for testing'
+                    sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
+                }
             }
         }
         stage('Test'){
