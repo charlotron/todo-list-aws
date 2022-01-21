@@ -10,7 +10,7 @@ pipeline {
                     //writeFile file: '~/.aws/credentials', text: "$AWS_CREDENTIALS_FILE"
                     writeFile file: '~/.aws/credentials', text: "$SECRET_CREDENTIALS_FILE"
 
-                    //sh "more  ~/.aws/credentials"
+                    sh "more  ~/.aws/credentials"
                     sh "aws sts get-caller-identity"
 
                     echo 'Setup Virtualenv for testing'
