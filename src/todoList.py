@@ -11,7 +11,6 @@ def get_table(dynamodb=None):
     if not dynamodb:
         URL = os.environ['ENDPOINT_OVERRIDE']
         if URL:
-            print('URL dynamoDB:'+URL)
             boto3.client = functools.partial(boto3.client, endpoint_url=URL)
             boto3.resource = functools.partial(boto3.resource,
                                                endpoint_url=URL)
@@ -73,7 +72,8 @@ def put_item(text, dynamodb=None):
 
 def update_item(key, text, checked, dynamodb=None):
     table = get_table(dynamodb)
-    timestamp = int(time.time() * 1000)
+    curtime=time.time()
+    timestamp = int(curtime * 1000)
     # update the todo in the database
     try:
         result = table.update_item(
@@ -141,7 +141,8 @@ def create_todo_table(dynamodb):
     )
 
     # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    waiter=table.meta.client.get_waiter('table_exists');
+    waiter.wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
         raise AssertionError()
 
